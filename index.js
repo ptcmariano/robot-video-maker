@@ -3,7 +3,9 @@ const readline = require('readline-sync')
 const TextRobot = require('./src/robots/text')
 
 async function start() {
-  let content = {}
+  let content = {
+    maximumSentences: 6
+  }
   const objOrchestrator = new Orchestrator()
 
   let term = readline.question("Type a Wikipedia search term: ")
@@ -16,6 +18,8 @@ async function start() {
   content.sourceContentOriginal = await textRobot.fetchContentFromWikipedia()
   content.sourceContentSanitized = textRobot.sanitizeContent(content.sourceContentOriginal)
   textRobot.breakContentIntoSentences(content)
+  textRobot.limitMaximumSentences(content)
+  await textRobot.fetchKeywordsOfAllSentences(content)
 
   console.log(content)
 }
