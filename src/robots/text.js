@@ -1,5 +1,6 @@
 const algorithmia = require('algorithmia')
 const algorithmiaApiKey = require('../credentials/algorithmia.json').apiKey
+const sentenceBoundaryDetection = require('sbd')
 
 class TextRobot {
     constructor(term) {
@@ -30,6 +31,18 @@ class TextRobot {
         withoutBlankLinesAndMarkdown = withoutBlankLinesAndMarkdown.join(' ')
         let sanitizeContent = withoutBlankLinesAndMarkdown.replace(/\((?:\([^()]*\)|[^()])*\)/gm, '').replace(/  /g,' ')
         return sanitizeContent
+    }
+    breakContentIntoSentences(content) {
+        content.sentences = []
+    
+        const sentences = sentenceBoundaryDetection.sentences(content.sourceContentSanitized)
+        sentences.forEach((sentence) => {
+          content.sentences.push({
+            text: sentence,
+            keywords: [],
+            images: []
+          })
+        })
     }
 }
 

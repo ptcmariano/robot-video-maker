@@ -20,7 +20,8 @@
   "homepage": "https://github.com/ptcmariano/robot-video-maker#readme",
   "dependencies": {
     "algorithmia": "^0.3.10",
-    "readline-sync": "^1.4.9"
+    "readline-sync": "^1.4.9",
+    "sbd": "^1.0.15"
   },
   "devDependencies": {
     "jest": "^24.1.0"
