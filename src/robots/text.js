@@ -3,8 +3,9 @@ const algorithmiaApiKey = require('../credentials/algorithmia.json').apiKey
 const sentenceBoundaryDetection = require('sbd')
 
 class TextRobot {
-    constructor(term) {
+    constructor(term, nlu) {
         this.term = term
+        this.nlu = nlu
     }
     getSearchTerm() {
         return this.term
@@ -42,6 +43,35 @@ class TextRobot {
             keywords: [],
             images: []
           })
+        })
+    }
+    limitMaximumSentences(content) {
+        content.sentences = content.sentences.slice(0, content.maximumSentences)
+    }
+
+    async fetchKeywordsOfAllSentences(content) {
+        for (const sentence of content.sentences) {
+            sentence.keywords = await this.fetchWatsonAndReturnKeywords(sentence.text)
+        }
+    }
+    
+    async fetchWatsonAndReturnKeywords(sentence) {
+        return new Promise((resolve, reject) => {
+            this.nlu.analyze({
+                text: sentence,
+                features: {
+                    keywords: {}
+                }
+            }, (error, response) => {
+                if (error) {
+                    console.log('watson key', watsonApiKey)
+                    throw error
+                }
+                const keywords = response.keywords.map((keyword) => {
+                    return keyword.text
+                })
+                resolve(keywords)
+            })
         })
     }
 }

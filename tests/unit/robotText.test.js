@@ -1,7 +1,7 @@
 const TextRobot = require('../../src/robots/text')
 
 test('call TextRobot with parameter search term', () => {
-  expect(new TextRobot("Mahatma Gandhi").getSearchTerm()).toBe("Mahatma Gandhi");
+  expect(new TextRobot("Mahatma Gandhi", null).getSearchTerm()).toBe("Mahatma Gandhi");
 })
 
 // test('call TextRobot the method of fetch wikipedia content', async () => {
